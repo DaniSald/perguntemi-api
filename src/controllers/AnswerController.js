@@ -1,5 +1,6 @@
 const Answer = require('../models/Answer')
 const dbConnection = require('../database/index')
+const rng = require('../../build/Release/rng')
 
 module.exports = {
   async createAnswer (req, res) {
@@ -8,7 +9,7 @@ module.exports = {
 
       await Answer.create({ id, answer, email })
 
-      return res.status(200).json({ status: 200, message: 'Answer created' })
+      return res.status(201).json({ status: 200, message: 'Answer created' })
     } catch (error) { console.log(error) }
   },
 
@@ -16,13 +17,13 @@ module.exports = {
     try {
       const rows = await Answer.count({ col: 'id' })
 
-      const row = Math.floor(Math.random() * rows) + 1
+      const row = rng.rng(rows)
 
       const [result, metadata] = await dbConnection.query(`SELECT answer, id FROM (SELECT answer, id, ROW_NUMBER () OVER () FROM answers) AS result WHERE row_number = ${row};`)
 
       return res.status(200).json(result[0])
     } catch (error) {
-      console.log(error)
+      return res.status(400).json({ status: 400, message: 'Verify request' })
     }
   },
 
