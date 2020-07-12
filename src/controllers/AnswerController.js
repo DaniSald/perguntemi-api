@@ -1,5 +1,6 @@
 const Answer = require('../models/Answer')
 const dbConnection = require('../database/index')
+const { QueryTypes } = require('sequelize')
 const rng = require('../../build/Release/rng')
 
 module.exports = {
@@ -19,7 +20,7 @@ module.exports = {
 
       const row = rng.rng(rows)
 
-      const [result, metadata] = await dbConnection.query(`SELECT answer, id FROM (SELECT answer, id, ROW_NUMBER () OVER () FROM answers) AS result WHERE row_number = ${row};`)
+      const result = await dbConnection.query(`SELECT answer, id FROM (SELECT answer, id, ROW_NUMBER () OVER () FROM answers) AS result WHERE row_number = ${row};`, { type: QueryTypes.SELECT })
 
       return res.status(200).json(result[0])
     } catch (error) {
