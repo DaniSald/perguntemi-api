@@ -1,9 +1,21 @@
 const Answer = require('../models/Answer')
 const dbConnection = require('../database/index')
 const { QueryTypes } = require('sequelize')
+const jwt = require('jsonwebtoken')
 const rng = require('../../build/Release/rng')
 
 module.exports = {
+  verifyJWT (req, res, next) {
+    const token = req.headers['x-access-token']
+    if (!token) return res.status(401).json({ status: 401, message: 'No token provided.' })
+
+    jwt.verify(token, process.env.SECRET, err => {
+      if (err) return res.status(500).json({ status: 500, message: 'Failed to authenticate token.' })
+
+      next()
+    })
+  },
+
   async createAnswer (req, res) {
     try {
       const { id, answer, email } = req.body

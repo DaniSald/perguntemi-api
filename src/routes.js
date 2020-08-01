@@ -7,7 +7,7 @@ routes.use(cors())
 
 routes.post('/create/answer', AnswerController.createAnswer)
 
-routes.delete('/delete/answer/:id', AnswerController.deleteAnswer)
+routes.delete('/delete/answer/:id', AnswerController.verifyJWT, AnswerController.deleteAnswer)
 
 routes.get('/answer', AnswerController.getAnswer)
 
