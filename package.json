@@ -6,7 +6,8 @@
   "author": "Daniel Moraes de Sousa Saldanha",
   "license": "MIT",
   "scripts": {
-    "start-server": "nodemon src/index.js"
+    "start-server": "nodemon src/index.js",
+    "start": "node src/index.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
