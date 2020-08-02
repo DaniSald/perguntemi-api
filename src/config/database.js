@@ -10,5 +10,10 @@ module.exports = {
     timestamps: true,
     underscored: true
   },
-  use_env_variable: 'DATABASE_URL'
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  }
 }
